@@ -31,7 +31,7 @@ void Camera::RenderCamera(GLfloat width, GLfloat height) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// LookAt camera (position, target/direction, up)
-	view = glm::lookAt(this->transform.position, glm::vec3(0.0, -2.0, 0.0), glm::vec3(0.0, 5.0, 0.0));
+	view = glm::lookAt(this->transform.position, this->camDir, this->camUp);
 
 }
 
@@ -53,4 +53,12 @@ void Camera::SetCameraFront(glm::vec3 front) {
 
 void Camera::SetCameraPos(glm::vec3 pos) {
 	cameraPos = pos;
+}
+
+void Camera::SetCameraDirection(glm::vec3 camDir) {
+	this->camDir = camDir;
+}
+
+void Camera::SetCameraUp(glm::vec3 camUp) {
+	this->camUp = camUp;
 }

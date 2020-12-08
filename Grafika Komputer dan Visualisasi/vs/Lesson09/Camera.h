@@ -20,6 +20,8 @@ public:
 	glm::vec3 originalPosition;
 	glm::vec3 cameraPos;
 	glm::vec3 cameraFront;
+	glm::vec3 camUp;
+	glm::vec3 camDir;
 	GLfloat angle;
 	GLfloat camHeight;
 	Transform transform;
@@ -33,6 +35,9 @@ public:
 	void Orbit(GLfloat angularSpeed);
 
 	void Zoom(GLfloat value);
+
+	void SetCameraUp(glm::vec3 camUp);
+	void SetCameraDirection(glm::vec3 camDir);
 
 private:
 	bool defaultCamera = true;

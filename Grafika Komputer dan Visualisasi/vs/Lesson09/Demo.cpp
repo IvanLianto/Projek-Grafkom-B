@@ -113,7 +113,9 @@ void Demo::BuildObject() {
 	camera.RenderCamera(this->screenWidth, this->screenHeight);
 	camera.SetCameraPos(glm::vec3(0, 5, 2));
 	camera.SetCameraFront(glm::vec3(0, 0, 0));
-	camera.transform.SetPosition(glm::vec3(1.0, 100.0, 1.0));
+	camera.transform.SetPosition(glm::vec3(1.0, 50.0, 1.0));
+	camera.SetCameraDirection(glm::vec3(64.0, 0.0, 32.0));
+	camera.SetCameraUp(glm::vec3(0.0f, 1.0f, 0.0f));
 
 	// Render light
 	light.UseShader();
