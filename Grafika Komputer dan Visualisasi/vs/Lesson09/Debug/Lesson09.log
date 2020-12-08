@@ -1,0 +1,4 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Lesson02.vcxproj, Lesson03.vcxproj, Lesson04.vcxproj, Lesson05.vcxproj, Lesson06.vcxproj, Lesson07.vcxproj, Lesson08.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Demo.cpp
+d:\kuliah\semester 5\grafkom\projek-grafkom\grafika komputer dan visualisasi\vs\lesson09\demo.cpp(113): warning C4244: 'argument': conversion from 'unsigned int' to 'GLfloat', possible loss of data
+  Lesson09.vcxproj -> D:\Kuliah\Semester 5\Grafkom\Projek-Grafkom\Grafika Komputer dan Visualisasi\vs\Debug\Lesson09.exe
