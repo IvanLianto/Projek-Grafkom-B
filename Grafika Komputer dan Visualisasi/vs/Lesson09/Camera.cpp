@@ -2,10 +2,10 @@
 
 Camera::Camera() {
 	this->originalPosition = glm::vec3(-2.0f, -1.3f, -2.0f);
-	this->angle = 90;
+	
 	camHeight = 5.0f;
 	transform = Transform();
-	Orbit(this->angle);
+
 }
 
 Camera::~Camera() {
@@ -19,7 +19,7 @@ void Camera::SetDefault(bool flag) {
 void Camera::RenderCamera(GLfloat width, GLfloat height) {
 	// Pass perspective projection matrix
 	if (defaultCamera) {
-		projection = glm::perspective(45.0f, width / height, 0.1f, 100.0f);
+		projection = glm::perspective(45.0f, width / height, 0.1f, 1000.0f);
 	}
 	else {
 		GLfloat aspect = width / height;
@@ -35,12 +35,14 @@ void Camera::RenderCamera(GLfloat width, GLfloat height) {
 
 }
 
-void Camera::Orbit(GLfloat angularSpeed) {
-	this->angle += angularSpeed;
+void Camera::Orbit(GLfloat radius) {
+	/*this->angle += angularSpeed;
 	if (this->angle > 360.0f)this->angle -= 360.0f;
 	GLfloat newX = this->originalPosition.x * glm::sin(glm::radians(angle));
-	GLfloat newZ = this->originalPosition.z * glm::cos(glm::radians(angle));
-	transform.SetPosition(glm::vec3(newX, this->originalPosition.y, newZ));
+	GLfloat newZ = this->originalPosition.z * glm::cos(glm::radians(angle));*/
+	float camX = sin(glfwGetTime()) * radius;
+	float camZ = cos(glfwGetTime()) * radius;
+	transform.SetPosition(glm::vec3(camX, this->transform.position.y, camZ));
 }
 
 void Camera::Zoom(GLfloat value) {

@@ -119,8 +119,9 @@ void Demo::BuildObject() {
 	camera.SetCameraPos(glm::vec3(0, 5, 2));
 	camera.SetCameraFront(glm::vec3(0, 0, 0));
 	camera.transform.SetPosition(glm::vec3(1.0, 64.0, 1.0)); // diubah-ubah
-	camera.SetCameraDirection(glm::vec3(64.0, 0.0, 32.0)); // diubah-ubah
+	camera.SetCameraDirection(glm::vec3(0.0, 0.0, 0.0)); // diubah-ubah
 	camera.SetCameraUp(glm::vec3(0.0, 1.0, 0.0)); // diubah-ubah
+	camera.Orbit(100.0);
 
 	// Render light
 	light.UseShader();
@@ -173,8 +174,8 @@ void Demo::BuildObject() {
 
 void Demo::BuildLight() {
 	light.SetShader(this->shadowmapShader);
-	light.SetLightPos(glm::vec3(-2.0f, 50.0f, -1.0f));
-	light.SetViewPos(glm::vec3(camera.cameraPos.x, camera.cameraPos.y, camera.cameraPos.z));
+	light.SetLightPos(glm::vec3(0.0f, 50.0f, 0.0f));
+	light.SetViewPos(glm::vec3(0.0f, 50.0f, 0.0f));
 }
 
 void Demo::BuildPlane() 
@@ -199,7 +200,7 @@ void Demo::BuildPlane()
 	cube.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
-void Demo::BuildCube() 
+void Demo::BuildCube() //rak jualan 1
 {
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -256,12 +257,11 @@ void Demo::BuildCube()
 
 	cube.ApplyTexture("crate.png");
 	cube.VerticesDraw(sizeof(indices));
-	cube.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube.transform.SetPosition(glm::vec3(48.0f, 0.5f, 16.0f));
-	cube.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	cube.transform.SetPosition(glm::vec3(-24.0f, 0.5f, 8.0f));
+	cube.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
-void Demo::BuildCube2()
+void Demo::BuildCube2() // rak jualan 2
 {
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -318,12 +318,11 @@ void Demo::BuildCube2()
 
 	cube2.ApplyTexture("crate.png");
 	cube2.VerticesDraw(sizeof(indices));
-	cube2.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube2.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
-	cube2.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	cube2.transform.SetPosition(glm::vec3(-24.0f, 0.5f, -16.0f));
+	cube2.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
-void Demo::BuildCube3()
+void Demo::BuildCube3() // kulkas
 {
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -380,12 +379,11 @@ void Demo::BuildCube3()
 
 	cube3.ApplyTexture("crate.png");
 	cube3.VerticesDraw(sizeof(indices));
-	cube3.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube3.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
-	cube3.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	cube3.transform.SetPosition(glm::vec3(64.0f, 0.5f, -32.0f));
+	cube3.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
-void Demo::BuildCube4()
+void Demo::BuildCube4() // rak kecil
 {
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -442,12 +440,11 @@ void Demo::BuildCube4()
 
 	cube4.ApplyTexture("crate.png");
 	cube4.VerticesDraw(sizeof(indices));
-	cube4.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube4.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
-	cube4.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	cube4.transform.SetPosition(glm::vec3(-48.0f, 0.5f, -8.0f));
+	cube4.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
-void Demo::BuildCube5()
+void Demo::BuildCube5() //kasir
 {
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -504,9 +501,8 @@ void Demo::BuildCube5()
 
 	cube5.ApplyTexture("crate.png");
 	cube5.VerticesDraw(sizeof(indices));
-	cube5.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube5.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
-	cube5.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	cube5.transform.SetPosition(glm::vec3(-48.0f, 4.0f, 0.0f));
+	cube5.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
 void Demo::BuildCube6()
@@ -740,7 +736,6 @@ void Demo::BuildShaders()
 	shadowmapShader = shader.GetBuildShader("shadowMapping.vert", "shadowMapping.frag", nullptr);
 	depthmapShader = shader.GetBuildShader("depthMap.vert", "depthMap.frag", nullptr);
 }
-
 
 int main(int argc, char** argv) {
 	RenderEngine &app = Demo();
