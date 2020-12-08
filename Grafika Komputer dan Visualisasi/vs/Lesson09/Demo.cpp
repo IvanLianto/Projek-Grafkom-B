@@ -17,6 +17,8 @@ void Demo::Init() {
 	cube2 = Object3D();
 	cube3 = Object3D();
 	cube4 = Object3D();
+	cube5 = Object3D();
+	cube6 = Object3D();
 	plane = Object3D();
 	BuildShaders();
 	BuildDepthMap();
@@ -24,6 +26,8 @@ void Demo::Init() {
 	BuildCube2();
 	BuildCube3();
 	BuildCube4();
+	BuildCube5();
+	BuildCube6();
 	BuildPlane();
 	BuildLight();
 	camera.SetDefault(true);
@@ -37,6 +41,7 @@ void Demo::DeInit() {
 	cube2.DeInit();
 	cube3.DeInit();
 	cube4.DeInit();
+	cube5.DeInit();
 	glDeleteBuffers(1, &depthMapFBO);
 }
 
@@ -52,7 +57,7 @@ void Demo::Update(double deltaTime) {
 }
 
 void Demo::Render() {
-
+	
 	glEnable(GL_DEPTH_TEST);
 
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -63,7 +68,7 @@ void Demo::Render() {
 	BuildObject();
 
 	glDisable(GL_DEPTH_TEST);
-
+	
 	// Step 1 Render depth of scene to texture
 	// ----------------------------------------
 	/*glm::mat4 lightProjection, lightView;
@@ -83,7 +88,7 @@ void Demo::Render() {
 	//DrawTexturedPlane(this->depthmapShader);
 	/*glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
-
+	
 
 	// Step 2 Render scene normally using generated depth map
 	// ------------------------------------------------------
@@ -99,13 +104,13 @@ void Demo::Render() {
 	//float camZ = cos(glfwGetTime()) * radius;
 	//glm::mat4 view;
 	//view = glm::lookAt(glm::vec3(1.0, 50.0, 1.0), glm::vec3(0.0, -2.0, 0.0), glm::vec3(0.0, 5.0, 0.0));
-
+	
 	// Setting Light Attributes
 	//glUniformMatrix4fv(glGetUniformLocation(this->shadowmapShader, "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
 	// Configure Shaders
 
-
+	
 }
 
 void Demo::BuildObject() {
@@ -113,9 +118,9 @@ void Demo::BuildObject() {
 	camera.RenderCamera(this->screenWidth, this->screenHeight);
 	camera.SetCameraPos(glm::vec3(0, 5, 2));
 	camera.SetCameraFront(glm::vec3(0, 0, 0));
-	camera.transform.SetPosition(glm::vec3(1.0, 50.0, 1.0));
-	camera.SetCameraDirection(glm::vec3(64.0, 0.0, 32.0));
-	camera.SetCameraUp(glm::vec3(0.0f, 1.0f, 0.0f));
+	camera.transform.SetPosition(glm::vec3(1.0, 64.0, 1.0)); // diubah-ubah
+	camera.SetCameraDirection(glm::vec3(64.0, 0.0, 32.0)); // diubah-ubah
+	camera.SetCameraUp(glm::vec3(0.0, 1.0, 0.0)); // diubah-ubah
 
 	// Render light
 	light.UseShader();
@@ -150,6 +155,20 @@ void Demo::BuildObject() {
 	glUniform3f(glGetUniformLocation(cube2.GetShader(), "viewPos"), light.GetViewPos().x, light.GetViewPos().y, light.GetViewPos().z);
 	cube3.Render(depthMap);
 
+	cube4.UseShader();
+	glUniform1i(glGetUniformLocation(cube2.GetShader(), "diffuseTexture"), 0);
+	glUniform1i(glGetUniformLocation(cube2.GetShader(), "shadowMap"), 1);
+	glUniform3f(glGetUniformLocation(cube2.GetShader(), "lightPos"), light.GetLightPos().x, light.GetLightPos().y, light.GetLightPos().z);
+	glUniform3f(glGetUniformLocation(cube2.GetShader(), "viewPos"), light.GetViewPos().x, light.GetViewPos().y, light.GetViewPos().z);
+	cube4.Render(depthMap);
+
+	cube5.UseShader();
+	glUniform1i(glGetUniformLocation(cube2.GetShader(), "diffuseTexture"), 0);
+	glUniform1i(glGetUniformLocation(cube2.GetShader(), "shadowMap"), 1);
+	glUniform3f(glGetUniformLocation(cube2.GetShader(), "lightPos"), light.GetLightPos().x, light.GetLightPos().y, light.GetLightPos().z);
+	glUniform3f(glGetUniformLocation(cube2.GetShader(), "viewPos"), light.GetViewPos().x, light.GetViewPos().y, light.GetViewPos().z);
+	cube5.Render(depthMap);
+
 }
 
 void Demo::BuildLight() {
@@ -158,7 +177,7 @@ void Demo::BuildLight() {
 	light.SetViewPos(glm::vec3(camera.cameraPos.x, camera.cameraPos.y, camera.cameraPos.z));
 }
 
-void Demo::BuildPlane()
+void Demo::BuildPlane() 
 {
 	// Build geometry
 	GLfloat vertices[] = {
@@ -180,7 +199,7 @@ void Demo::BuildPlane()
 	cube.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
-void Demo::BuildCube()
+void Demo::BuildCube() 
 {
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -242,7 +261,6 @@ void Demo::BuildCube()
 	cube.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
 }
 
-
 void Demo::BuildCube2()
 {
 	// set up vertex data (and buffer(s)) and configure vertex attributes
@@ -295,16 +313,15 @@ void Demo::BuildCube2()
 		20, 22, 21, 20, 23, 22   // bottom
 	};
 
-	cube.SetShader(shadowmapShader);
-	cube.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
+	cube2.SetShader(shadowmapShader);
+	cube2.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
 
-	cube.ApplyTexture("crate.png");
-	cube.VerticesDraw(sizeof(indices));
-	cube.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
-	cube.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	cube2.ApplyTexture("crate.png");
+	cube2.VerticesDraw(sizeof(indices));
+	cube2.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
+	cube2.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
+	cube2.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
 }
-
 
 void Demo::BuildCube3()
 {
@@ -358,16 +375,15 @@ void Demo::BuildCube3()
 		20, 22, 21, 20, 23, 22   // bottom
 	};
 
-	cube.SetShader(shadowmapShader);
-	cube.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
+	cube3.SetShader(shadowmapShader);
+	cube3.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
 
-	cube.ApplyTexture("crate.png");
-	cube.VerticesDraw(sizeof(indices));
-	cube.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
-	cube.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	cube3.ApplyTexture("crate.png");
+	cube3.VerticesDraw(sizeof(indices));
+	cube3.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
+	cube3.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
+	cube3.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
 }
-
 
 void Demo::BuildCube4()
 {
@@ -383,33 +399,33 @@ void Demo::BuildCube4()
 
 		 // right
 		 8.0,  0.0,  0.0, 0, 0, 1.0f,  0.0f,  0.0f, // 4
-		 8.0,  0.0, 64.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
-		 8.0, 16.0, 64.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
+		 8.0,  0.0, 8.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
+		 8.0, 16.0, 8.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
 		 8.0, 16.0,  0.0, 0, 1, 1.0f,  0.0f,  0.0f, // 7
 
 		// back
-		0.0, 0.0, 64.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
-		8.0,  0.0, 64.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
-		8.0,   16.0, 64.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
-		0.0,  16.0, 64.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
+		0.0, 0.0, 8.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
+		8.0,  0.0, 8.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
+		8.0,   16.0, 8.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
+		0.0,  16.0, 8.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
 
 		 // left
-		 0.0, 0.0, 64.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
+		 0.0, 0.0, 8.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
 		 0.0, 0.0,  0.0, 1, 0, -1.0f,  0.0f,  0.0f, // 13
 		 0.0,  16.0,  0.0, 1, 1, -1.0f,  0.0f,  0.0f, // 14
-		 0.0,  16.0, 64.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
+		 0.0,  16.0, 8.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
 
 		// upper
 		0.0, 16.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
 		8.0, 16.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
-		8.0, 16.0, 64.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
-		0.0, 16.0, 64.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
+		8.0, 16.0, 8.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
+		0.0, 16.0, 8.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
 
 		// bottom
 		0.0, 0.0, 0.0, 0, 0, 0.0f,  -1.0f,  0.0f, // 20
 		8.0, 0.0, 0.0, 1, 0,  0.0f,  -1.0f,  0.0f, // 21
-		8.0, 0.0,  64.0, 1, 1,  0.0f,  -1.0f,  0.0f, // 22
-		0.0, 0.0,  64.0, 0, 1, 0.0f,  -1.0f,  0.0f, // 23
+		8.0, 0.0,  8.0, 1, 1,  0.0f,  -1.0f,  0.0f, // 22
+		0.0, 0.0,  8.0, 0, 1, 0.0f,  -1.0f,  0.0f, // 23
 	};
 
 	unsigned int indices[] = {
@@ -421,17 +437,141 @@ void Demo::BuildCube4()
 		20, 22, 21, 20, 23, 22   // bottom
 	};
 
-	cube.SetShader(shadowmapShader);
-	cube.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
+	cube4.SetShader(shadowmapShader);
+	cube4.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
 
-	cube.ApplyTexture("crate.png");
-	cube.VerticesDraw(sizeof(indices));
-	cube.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
-	cube.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	cube4.ApplyTexture("crate.png");
+	cube4.VerticesDraw(sizeof(indices));
+	cube4.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
+	cube4.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
+	cube4.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
 }
 
-void Demo::ApplyTexture(const char* _texturePath)
+void Demo::BuildCube5()
+{
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+	// ------------------------------------------------------------------
+	float vertices[] = {
+		// format position, tex coords, normal
+		// front
+		0.0, 4.0, 0.0, 0, 0, 0.0f,  0.0f,  1.0f, // 0
+		8.0, 4.0, 0.0, 1, 0,  0.0f,  0.0f,  1.0f, // 1
+		8.0,  8.0, 0.0, 1, 1,  0.0f,  0.0f,  1.0f, // 2
+		0.0,  8.0, 0.0, 0, 1, 0.0f,  0.0f,  1.0f, // 3
+
+		 // right
+		 8.0,  4.0,  0.0, 0, 0, 1.0f,  0.0f,  0.0f, // 4
+		 8.0,  4.0, 32.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
+		 8.0, 8.0, 32.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
+		 8.0, 8.0,  0.0, 0, 1, 1.0f,  0.0f,  0.0f, // 7
+
+		// back
+		0.0, 4.0, 32.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
+		8.0,  4.0, 32.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
+		8.0,   8.0, 32.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
+		0.0,  8.0, 32.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
+
+		 // left
+		 0.0, 4.0, 32.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
+		 0.0, 4.0,  0.0, 1, 0, -1.0f,  0.0f,  0.0f, // 13
+		 0.0,  8.0,  0.0, 1, 1, -1.0f,  0.0f,  0.0f, // 14
+		 0.0,  8.0, 32.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
+
+		// upper
+		0.0, 8.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
+		8.0, 8.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
+		8.0, 8.0, 32.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
+		0.0, 8.0, 32.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
+
+		// bottom
+		0.0, 0.0, 0.0, 0, 0, 0.0f,  -1.0f,  0.0f, // 20
+		8.0, 0.0, 0.0, 1, 0,  0.0f,  -1.0f,  0.0f, // 21
+		8.0, 0.0,  32.0, 1, 1,  0.0f,  -1.0f,  0.0f, // 22
+		0.0, 0.0,  32.0, 0, 1, 0.0f,  -1.0f,  0.0f, // 23
+	};
+
+	unsigned int indices[] = {
+		0,  1,  2,  0,  2,  3,   // front
+		4,  5,  6,  4,  6,  7,   // right
+		8,  9,  10, 8,  10, 11,  // back
+		12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18,  // upper
+		20, 22, 21, 20, 23, 22   // bottom
+	};
+
+	cube5.SetShader(shadowmapShader);
+	cube5.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
+
+	cube5.ApplyTexture("crate.png");
+	cube5.VerticesDraw(sizeof(indices));
+	cube5.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
+	cube5.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
+	cube5.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+}
+
+void Demo::BuildCube6()
+{
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+	// ------------------------------------------------------------------
+	float vertices[] = {
+		// format position, tex coords, normal
+		// front
+		0.0, 4.0, 0.0, 0, 0, 0.0f,  0.0f,  1.0f, // 0
+		8.0, 4.0, 0.0, 1, 0,  0.0f,  0.0f,  1.0f, // 1
+		8.0,  8.0, 0.0, 1, 1,  0.0f,  0.0f,  1.0f, // 2
+		0.0,  8.0, 0.0, 0, 1, 0.0f,  0.0f,  1.0f, // 3
+
+		 // right
+		 8.0,  4.0,  0.0, 0, 0, 1.0f,  0.0f,  0.0f, // 4
+		 8.0,  4.0, 32.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
+		 8.0, 8.0, 32.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
+		 8.0, 8.0,  0.0, 0, 1, 1.0f,  0.0f,  0.0f, // 7
+
+		// back
+		0.0, 4.0, 32.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
+		8.0,  4.0, 32.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
+		8.0,   8.0, 32.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
+		0.0,  8.0, 32.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
+
+		 // left
+		 0.0, 4.0, 32.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
+		 0.0, 4.0,  0.0, 1, 0, -1.0f,  0.0f,  0.0f, // 13
+		 0.0,  8.0,  0.0, 1, 1, -1.0f,  0.0f,  0.0f, // 14
+		 0.0,  8.0, 32.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
+
+		// upper
+		0.0, 8.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
+		8.0, 8.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
+		8.0, 8.0, 32.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
+		0.0, 8.0, 32.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
+
+		// bottom
+		0.0, 0.0, 0.0, 0, 0, 0.0f,  -1.0f,  0.0f, // 20
+		8.0, 0.0, 0.0, 1, 0,  0.0f,  -1.0f,  0.0f, // 21
+		8.0, 0.0,  32.0, 1, 1,  0.0f,  -1.0f,  0.0f, // 22
+		0.0, 0.0,  32.0, 0, 1, 0.0f,  -1.0f,  0.0f, // 23
+	};
+
+	unsigned int indices[] = {
+		0,  1,  2,  0,  2,  3,   // front
+		4,  5,  6,  4,  6,  7,   // right
+		8,  9,  10, 8,  10, 11,  // back
+		12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18,  // upper
+		20, 22, 21, 20, 23, 22   // bottom
+	};
+
+	cube6.SetShader(shadowmapShader);
+	cube6.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
+
+	cube6.ApplyTexture("crate.png");
+	cube6.VerticesDraw(sizeof(indices));
+	cube6.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
+	cube6.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
+	cube6.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
+}
+
+void Demo::ApplyTexture(const char* _texturePath) 
 {
 	// load image into texture memory
 	// ------------------------------
@@ -516,7 +656,7 @@ void Demo::BuildTexturedPlane()
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
+	
 
 	// Build geometry
 	GLfloat vertices[] = {
