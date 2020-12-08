@@ -144,6 +144,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="crate.png" />
+    <Image Include="D:\FILE KHUSUS KULIAH COK!\Sems 5\Grafika Komputer\TA\asset\rak_beta.png" />
+    <Image Include="rak_beta.png" />
     <Image Include="wood.png" />
   </ItemGroup>
   <ItemGroup>

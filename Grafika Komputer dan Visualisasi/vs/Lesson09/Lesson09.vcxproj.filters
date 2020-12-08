@@ -84,5 +84,11 @@
     <Image Include="wood.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="D:\FILE KHUSUS KULIAH COK!\Sems 5\Grafika Komputer\TA\asset\rak_beta.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="rak_beta.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

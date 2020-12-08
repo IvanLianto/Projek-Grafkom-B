@@ -254,8 +254,7 @@ void Demo::BuildCube() //rak jualan 1
 
 	cube.SetShader(shadowmapShader);
 	cube.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
-
-	cube.ApplyTexture("crate.png");
+	cube.ApplyTexture("rak_beta.png");
 	cube.VerticesDraw(sizeof(indices));
 	cube.transform.SetPosition(glm::vec3(-24.0f, 0.5f, 8.0f));
 	cube.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -315,8 +314,7 @@ void Demo::BuildCube2() // rak jualan 2
 
 	cube2.SetShader(shadowmapShader);
 	cube2.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
-
-	cube2.ApplyTexture("crate.png");
+	cube.ApplyTexture("rak_beta.png");
 	cube2.VerticesDraw(sizeof(indices));
 	cube2.transform.SetPosition(glm::vec3(-24.0f, 0.5f, -16.0f));
 	cube2.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
