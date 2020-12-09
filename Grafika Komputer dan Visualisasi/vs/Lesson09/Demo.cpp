@@ -57,7 +57,7 @@ void Demo::Update(double deltaTime) {
 }
 
 void Demo::Render() {
-	
+
 	glEnable(GL_DEPTH_TEST);
 
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -68,7 +68,7 @@ void Demo::Render() {
 	BuildObject();
 
 	glDisable(GL_DEPTH_TEST);
-	
+
 	// Step 1 Render depth of scene to texture
 	// ----------------------------------------
 	/*glm::mat4 lightProjection, lightView;
@@ -88,7 +88,7 @@ void Demo::Render() {
 	//DrawTexturedPlane(this->depthmapShader);
 	/*glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
-	
+
 
 	// Step 2 Render scene normally using generated depth map
 	// ------------------------------------------------------
@@ -104,13 +104,13 @@ void Demo::Render() {
 	//float camZ = cos(glfwGetTime()) * radius;
 	//glm::mat4 view;
 	//view = glm::lookAt(glm::vec3(1.0, 50.0, 1.0), glm::vec3(0.0, -2.0, 0.0), glm::vec3(0.0, 5.0, 0.0));
-	
+
 	// Setting Light Attributes
 	//glUniformMatrix4fv(glGetUniformLocation(this->shadowmapShader, "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
 	// Configure Shaders
 
-	
+
 }
 
 void Demo::BuildObject() {
@@ -123,62 +123,53 @@ void Demo::BuildObject() {
 	camera.SetCameraUp(glm::vec3(0.0, 1.0, 0.0)); // diubah-ubah
 	camera.Orbit(100.0);
 
+	// Configurate Shader
+	glUniform1i(glGetUniformLocation(this->shadowmapShader, "diffuseTexture"), 0);
+	glUniform1i(glGetUniformLocation(this->shadowmapShader, "shadowMap"), 1);
+
 	// Render light
 	light.UseShader();
 	glUniformMatrix4fv(glGetUniformLocation(light.GetShader(), "projection"), 1, GL_FALSE, glm::value_ptr(camera.projection));
 	glUniformMatrix4fv(glGetUniformLocation(light.GetShader(), "view"), 1, GL_FALSE, glm::value_ptr(camera.view));
+	glUniformMatrix4fv(glGetUniformLocation(light.GetShader(), "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(light.GetLightSpaceMatrix()));
 
 	// Render floor
 	plane.UseShader();
-	glUniform1i(glGetUniformLocation(plane.GetShader(), "diffuseTexture"), 0);
-	glUniform1i(glGetUniformLocation(plane.GetShader(), "shadowMap"), 1);
 	plane.Render(depthMap);
 
 	// Render cube
 	cube.UseShader();
-	glUniform1i(glGetUniformLocation(cube.GetShader(), "diffuseTexture"), 0);
-	glUniform1i(glGetUniformLocation(cube.GetShader(), "shadowMap"), 1);
-	glUniform3f(glGetUniformLocation(cube.GetShader(), "lightPos"), light.GetLightPos().x, light.GetLightPos().y, light.GetLightPos().z);
-	glUniform3f(glGetUniformLocation(cube.GetShader(), "viewPos"), light.GetViewPos().x, light.GetViewPos().y, light.GetViewPos().z);
 	cube.Render(depthMap);
 
 	cube2.UseShader();
-	glUniform1i(glGetUniformLocation(cube2.GetShader(), "diffuseTexture"), 0);
-	glUniform1i(glGetUniformLocation(cube2.GetShader(), "shadowMap"), 1);
-	glUniform3f(glGetUniformLocation(cube2.GetShader(), "lightPos"), light.GetLightPos().x, light.GetLightPos().y, light.GetLightPos().z);
-	glUniform3f(glGetUniformLocation(cube2.GetShader(), "viewPos"), light.GetViewPos().x, light.GetViewPos().y, light.GetViewPos().z);
 	cube2.Render(depthMap);
 
 	cube3.UseShader();
-	glUniform1i(glGetUniformLocation(cube2.GetShader(), "diffuseTexture"), 0);
-	glUniform1i(glGetUniformLocation(cube2.GetShader(), "shadowMap"), 1);
-	glUniform3f(glGetUniformLocation(cube2.GetShader(), "lightPos"), light.GetLightPos().x, light.GetLightPos().y, light.GetLightPos().z);
-	glUniform3f(glGetUniformLocation(cube2.GetShader(), "viewPos"), light.GetViewPos().x, light.GetViewPos().y, light.GetViewPos().z);
 	cube3.Render(depthMap);
 
 	cube4.UseShader();
-	glUniform1i(glGetUniformLocation(cube2.GetShader(), "diffuseTexture"), 0);
-	glUniform1i(glGetUniformLocation(cube2.GetShader(), "shadowMap"), 1);
-	glUniform3f(glGetUniformLocation(cube2.GetShader(), "lightPos"), light.GetLightPos().x, light.GetLightPos().y, light.GetLightPos().z);
-	glUniform3f(glGetUniformLocation(cube2.GetShader(), "viewPos"), light.GetViewPos().x, light.GetViewPos().y, light.GetViewPos().z);
 	cube4.Render(depthMap);
 
 	cube5.UseShader();
-	glUniform1i(glGetUniformLocation(cube2.GetShader(), "diffuseTexture"), 0);
-	glUniform1i(glGetUniformLocation(cube2.GetShader(), "shadowMap"), 1);
-	glUniform3f(glGetUniformLocation(cube2.GetShader(), "lightPos"), light.GetLightPos().x, light.GetLightPos().y, light.GetLightPos().z);
-	glUniform3f(glGetUniformLocation(cube2.GetShader(), "viewPos"), light.GetViewPos().x, light.GetViewPos().y, light.GetViewPos().z);
 	cube5.Render(depthMap);
 
 }
 
 void Demo::BuildLight() {
+	light.SetShader(this->depthmapShader);
+	light.transform.SetPosition(glm::vec3(-2.0f, 4.0f, -1.0f));
+	light.SetLightDir(glm::vec3(0.0f, 0.0f, 0.0f));
+	light.SetLightUp(glm::vec3(0.0, 1.0, 0.0));
+	light.SetFarPlane(7.5f);
+	light.SetNearPlane(1.0f);
+	light.CreateShadow(depthMapFBO);
+
 	light.SetShader(this->shadowmapShader);
 	light.SetLightPos(glm::vec3(0.0f, 50.0f, 0.0f));
 	light.SetViewPos(glm::vec3(0.0f, 50.0f, 0.0f));
 }
 
-void Demo::BuildPlane() 
+void Demo::BuildPlane()
 {
 	// Build geometry
 	GLfloat vertices[] = {
@@ -314,7 +305,7 @@ void Demo::BuildCube2() // rak jualan 2
 
 	cube2.SetShader(shadowmapShader);
 	cube2.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
-	cube.ApplyTexture("rak_beta.png");
+	cube2.ApplyTexture("rak_beta.png");
 	cube2.VerticesDraw(sizeof(indices));
 	cube2.transform.SetPosition(glm::vec3(-24.0f, 0.5f, -16.0f));
 	cube2.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -565,7 +556,7 @@ void Demo::BuildCube6()
 	cube6.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
 }
 
-void Demo::ApplyTexture(const char* _texturePath) 
+void Demo::ApplyTexture(const char* _texturePath)
 {
 	// load image into texture memory
 	// ------------------------------
@@ -650,7 +641,7 @@ void Demo::BuildTexturedPlane()
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	
+
 
 	// Build geometry
 	GLfloat vertices[] = {
