@@ -22,6 +22,7 @@ public:
 	glm::vec3 cameraFront;
 	glm::vec3 camUp;
 	glm::vec3 camDir;
+	float fovy;
 	GLfloat angle;
 	GLfloat camHeight;
 	Transform transform;
@@ -38,6 +39,10 @@ public:
 
 	void SetCameraUp(glm::vec3 camUp);
 	void SetCameraDirection(glm::vec3 camDir);
+
+	void MoveForward(float camSpeed);
+	void MoveBeside(float camSpeed);
+	void RotateCamera(float camSpeed);
 
 private:
 	bool defaultCamera = true;
