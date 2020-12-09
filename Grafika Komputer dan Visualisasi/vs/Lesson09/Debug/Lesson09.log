@@ -1,5 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Lesson02.vcxproj, Lesson03.vcxproj, Lesson04.vcxproj, Lesson05.vcxproj, Lesson06.vcxproj, Lesson07.vcxproj, Lesson08.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Demo.cpp
-C:\Users\acer\Git\Projek-Grafkom-B\Grafika Komputer dan Visualisasi\vs\Lesson09\Demo.cpp(118,45): warning C4244: 'argument': conversion from 'unsigned int' to 'GLfloat', possible loss of data
-C:\Users\acer\Git\Projek-Grafkom-B\Grafika Komputer dan Visualisasi\vs\Lesson09\Demo.cpp(118,26): warning C4244: 'argument': conversion from 'unsigned int' to 'GLfloat', possible loss of data
-  Lesson09.vcxproj -> C:\Users\acer\Git\Projek-Grafkom-B\Grafika Komputer dan Visualisasi\vs\Debug\Lesson09.exe
+F:\Document\Projek-Grafkom-B\Grafika Komputer dan Visualisasi\vs\Lesson09\Demo.cpp(121,45): warning C4244: 'argument': conversion from 'unsigned int' to 'GLfloat', possible loss of data
+F:\Document\Projek-Grafkom-B\Grafika Komputer dan Visualisasi\vs\Lesson09\Demo.cpp(121,26): warning C4244: 'argument': conversion from 'unsigned int' to 'GLfloat', possible loss of data
+  Lesson09.vcxproj -> F:\Document\Projek-Grafkom-B\Grafika Komputer dan Visualisasi\vs\Debug\Lesson09.exe

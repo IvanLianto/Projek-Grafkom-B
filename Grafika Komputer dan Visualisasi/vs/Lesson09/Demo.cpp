@@ -16,6 +16,7 @@ void Demo::Init() {
 	cube = Object3D();
 	cube2 = Object3D();
 	cube3 = Object3D();
+	cube3up = Object3D();
 	cube4 = Object3D();
 	cube5 = Object3D();
 	cube6 = Object3D();
@@ -25,6 +26,7 @@ void Demo::Init() {
 	BuildCube();
 	BuildCube2();
 	BuildCube3();
+	BuildCube3up();
 	BuildCube4();
 	BuildCube5();
 	BuildCube6();
@@ -40,6 +42,7 @@ void Demo::DeInit() {
 	cube.DeInit();
 	cube2.DeInit();
 	cube3.DeInit();
+	cube3up.DeInit();
 	cube4.DeInit();
 	cube5.DeInit();
 	glDeleteBuffers(1, &depthMapFBO);
@@ -153,11 +156,14 @@ void Demo::BuildObject() {
 	cube5.UseShader();
 	cube5.Render(depthMap);
 
+	cube3up.UseShader();
+	cube3up.Render(depthMap);
+
 }
 
 void Demo::BuildLight() {
 	light.SetShader(this->depthmapShader);
-	light.transform.SetPosition(glm::vec3(-2.0f, 4.0f, -1.0f));
+	light.transform.SetPosition(glm::vec3(0.0f, 10.0f, 0.0f));
 	light.SetLightDir(glm::vec3(0.0f, 0.0f, 0.0f));
 	light.SetLightUp(glm::vec3(0.0, 1.0, 0.0));
 	light.SetFarPlane(7.5f);
@@ -186,7 +192,7 @@ void Demo::BuildPlane()
 	plane.SetShader(shadowmapShader);
 	plane.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
 
-	plane.ApplyTexture("wood.png");
+	plane.ApplyTexture("Floor.png");
 	plane.VerticesDraw(sizeof(indices));
 	cube.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
 }
@@ -342,10 +348,10 @@ void Demo::BuildCube3() // kulkas
 		 0.0,  16.0, 64.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
 
 		// upper
-		0.0, 16.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
-		8.0, 16.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
-		8.0, 16.0, 64.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
-		0.0, 16.0, 64.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
+		//0.0, 16.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
+		//8.0, 16.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
+		//8.0, 16.0, 64.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
+		//0.0, 16.0, 64.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
 
 		// bottom
 		0.0, 0.0, 0.0, 0, 0, 0.0f,  -1.0f,  0.0f, // 20
@@ -359,17 +365,77 @@ void Demo::BuildCube3() // kulkas
 		4,  5,  6,  4,  6,  7,   // right
 		8,  9,  10, 8,  10, 11,  // back
 		12, 14, 13, 12, 15, 14,  // left
-		16, 18, 17, 16, 19, 18,  // upper
+		/*16, 18, 17, 16, 19, 18,*/  // upper
 		20, 22, 21, 20, 23, 22   // bottom
 	};
 
 	cube3.SetShader(shadowmapShader);
 	cube3.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
 
-	cube3.ApplyTexture("crate.png");
+	cube3.ApplyTexture("Kulkas.png");
 	cube3.VerticesDraw(sizeof(indices));
 	cube3.transform.SetPosition(glm::vec3(64.0f, 0.5f, -32.0f));
 	cube3.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
+}
+
+void Demo::BuildCube3up() // kulkas
+{
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+	// ------------------------------------------------------------------
+	float vertices[] = {
+		// format position, tex coords, normal
+		// front
+		0.0, 0.0, 0.0, 0, 0, 0.0f,  0.0f,  1.0f, // 0
+		8.0, 0.0, 0.0, 1, 0,  0.0f,  0.0f,  1.0f, // 1
+		8.0,  16.0, 0.0, 1, 1,  0.0f,  0.0f,  1.0f, // 2
+		0.0,  16.0, 0.0, 0, 1, 0.0f,  0.0f,  1.0f, // 3
+
+		 // right
+		 8.0,  0.0,  0.0, 0, 0, 1.0f,  0.0f,  0.0f, // 4
+		 8.0,  0.0, 64.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
+		 8.0, 16.0, 64.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
+		 8.0, 16.0,  0.0, 0, 1, 1.0f,  0.0f,  0.0f, // 7
+
+		// back
+		0.0, 0.0, 64.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
+		8.0,  0.0, 64.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
+		8.0,   16.0, 64.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
+		0.0,  16.0, 64.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
+
+		 // left
+		 0.0, 0.0, 64.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
+		 0.0, 0.0,  0.0, 1, 0, -1.0f,  0.0f,  0.0f, // 13
+		 0.0,  16.0,  0.0, 1, 1, -1.0f,  0.0f,  0.0f, // 14
+		 0.0,  16.0, 64.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
+
+		// upper
+		0.0, 16.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
+		8.0, 16.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
+		8.0, 16.0, 64.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
+		0.0, 16.0, 64.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
+
+		// bottom
+		0.0, 0.0, 0.0, 0, 0, 0.0f,  -1.0f,  0.0f, // 20
+		8.0, 0.0, 0.0, 1, 0,  0.0f,  -1.0f,  0.0f, // 21
+		8.0, 0.0,  64.0, 1, 1,  0.0f,  -1.0f,  0.0f, // 22
+		0.0, 0.0,  64.0, 0, 1, 0.0f,  -1.0f,  0.0f, // 23
+	};
+
+	unsigned int indices[] = {
+		//0,  1,  2,  0,  2,  3,   // front
+		//4,  5,  6,  4,  6,  7,   // right
+		//8,  9,  10, 8,  10, 11,  // back
+		//12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18// upper
+		//20, 22, 21, 20, 23, 22   // bottom
+	};
+
+	cube3up.SetShader(shadowmapShader);
+	cube3up.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
+	cube3up.ApplyTexture("Kasir.png");
+	cube3up.VerticesDraw(sizeof(indices));
+	cube3up.transform.SetPosition(glm::vec3(64.0f, 0.5f, -32.0f));
+	cube3up.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
 void Demo::BuildCube4() // rak kecil
@@ -440,34 +506,34 @@ void Demo::BuildCube5() //kasir
 	float vertices[] = {
 		// format position, tex coords, normal
 		// front
-		0.0, 4.0, 0.0, 0, 0, 0.0f,  0.0f,  1.0f, // 0
-		8.0, 4.0, 0.0, 1, 0,  0.0f,  0.0f,  1.0f, // 1
-		8.0,  8.0, 0.0, 1, 1,  0.0f,  0.0f,  1.0f, // 2
-		0.0,  8.0, 0.0, 0, 1, 0.0f,  0.0f,  1.0f, // 3
+		0.0, 0.0, 0.0, 0, 0, 0.0f,  0.0f,  1.0f, // 0
+		8.0, 0.0, 0.0, 1, 0,  0.0f,  0.0f,  1.0f, // 1
+		8.0,  4.0, 0.0, 1, 1,  0.0f,  0.0f,  1.0f, // 2
+		0.0,  4.0, 0.0, 0, 1, 0.0f,  0.0f,  1.0f, // 3
 
 		 // right
-		 8.0,  4.0,  0.0, 0, 0, 1.0f,  0.0f,  0.0f, // 4
-		 8.0,  4.0, 32.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
-		 8.0, 8.0, 32.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
-		 8.0, 8.0,  0.0, 0, 1, 1.0f,  0.0f,  0.0f, // 7
+		 8.0,  0.0,  0.0, 0, 0, 1.0f,  0.0f,  0.0f, // 4
+		 8.0,  0.0, 32.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
+		 8.0, 4.0, 32.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
+		 8.0, 4.0,  0.0, 0, 1, 1.0f,  0.0f,  0.0f, // 7
 
 		// back
-		0.0, 4.0, 32.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
-		8.0,  4.0, 32.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
-		8.0,   8.0, 32.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
-		0.0,  8.0, 32.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
+		0.0, 0.0, 32.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
+		8.0,  0.0, 32.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
+		8.0,   4.0, 32.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
+		0.0,  4.0, 32.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
 
 		 // left
-		 0.0, 4.0, 32.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
-		 0.0, 4.0,  0.0, 1, 0, -1.0f,  0.0f,  0.0f, // 13
-		 0.0,  8.0,  0.0, 1, 1, -1.0f,  0.0f,  0.0f, // 14
-		 0.0,  8.0, 32.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
+		 0.0, 0.0, 32.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
+		 0.0, 0.0,  0.0, 1, 0, -1.0f,  0.0f,  0.0f, // 13
+		 0.0,  4.0,  0.0, 1, 1, -1.0f,  0.0f,  0.0f, // 14
+		 0.0,  4.0, 32.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
 
 		// upper
-		0.0, 8.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
-		8.0, 8.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
-		8.0, 8.0, 32.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
-		0.0, 8.0, 32.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
+		0.0, 4.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
+		8.0, 4.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
+		8.0, 4.0, 32.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
+		0.0, 4.0, 32.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
 
 		// bottom
 		0.0, 0.0, 0.0, 0, 0, 0.0f,  -1.0f,  0.0f, // 20
@@ -488,7 +554,7 @@ void Demo::BuildCube5() //kasir
 	cube5.SetShader(shadowmapShader);
 	cube5.BuildObject(vertices, sizeof(vertices), indices, sizeof(indices));
 
-	cube5.ApplyTexture("crate.png");
+	cube5.ApplyTexture("Kasir.png");
 	cube5.VerticesDraw(sizeof(indices));
 	cube5.transform.SetPosition(glm::vec3(-48.0f, 4.0f, 0.0f));
 	cube5.transform.Scale(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -501,34 +567,34 @@ void Demo::BuildCube6()
 	float vertices[] = {
 		// format position, tex coords, normal
 		// front
-		0.0, 4.0, 0.0, 0, 0, 0.0f,  0.0f,  1.0f, // 0
-		8.0, 4.0, 0.0, 1, 0,  0.0f,  0.0f,  1.0f, // 1
-		8.0,  8.0, 0.0, 1, 1,  0.0f,  0.0f,  1.0f, // 2
-		0.0,  8.0, 0.0, 0, 1, 0.0f,  0.0f,  1.0f, // 3
+		0.0, 0.0, 0.0, 0, 0, 0.0f,  0.0f,  1.0f, // 0
+		8.0, 0.0, 0.0, 1, 0,  0.0f,  0.0f,  1.0f, // 1
+		8.0,  4.0, 0.0, 1, 1,  0.0f,  0.0f,  1.0f, // 2
+		0.0,  4.0, 0.0, 0, 1, 0.0f,  0.0f,  1.0f, // 3
 
 		 // right
-		 8.0,  4.0,  0.0, 0, 0, 1.0f,  0.0f,  0.0f, // 4
-		 8.0,  4.0, 32.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
-		 8.0, 8.0, 32.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
-		 8.0, 8.0,  0.0, 0, 1, 1.0f,  0.0f,  0.0f, // 7
+		 8.0,  0.0,  0.0, 0, 0, 1.0f,  0.0f,  0.0f, // 4
+		 8.0,  0.0, 32.0, 1, 0, 1.0f,  0.0f,  0.0f, // 5
+		 8.0, 4.0, 32.0, 1, 1, 1.0f,  0.0f,  0.0f, // 6
+		 8.0, 4.0,  0.0, 0, 1, 1.0f,  0.0f,  0.0f, // 7
 
 		// back
-		0.0, 4.0, 32.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
-		8.0,  4.0, 32.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
-		8.0,   8.0, 32.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
-		0.0,  8.0, 32.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
+		0.0, 0.0, 32.0, 0, 0, 0.0f,  0.0f,  -1.0f, // 8 
+		8.0,  0.0, 32.0, 1, 0, 0.0f,  0.0f,  -1.0f, // 9
+		8.0,   4.0, 32.0, 1, 1, 0.0f,  0.0f,  -1.0f, // 10
+		0.0,  4.0, 32.0, 0, 1, 0.0f,  0.0f,  -1.0f, // 11
 
 		 // left
-		 0.0, 4.0, 32.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
-		 0.0, 4.0,  0.0, 1, 0, -1.0f,  0.0f,  0.0f, // 13
-		 0.0,  8.0,  0.0, 1, 1, -1.0f,  0.0f,  0.0f, // 14
-		 0.0,  8.0, 32.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
+		 0.0, 0.0, 32.0, 0, 0, -1.0f,  0.0f,  0.0f, // 12
+		 0.0, 0.0,  0.0, 1, 0, -1.0f,  0.0f,  0.0f, // 13
+		 0.0,  4.0,  0.0, 1, 1, -1.0f,  0.0f,  0.0f, // 14
+		 0.0,  4.0, 32.0, 0, 1, -1.0f,  0.0f,  0.0f, // 15
 
 		// upper
-		0.0, 8.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
-		8.0, 8.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
-		8.0, 8.0, 32.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
-		0.0, 8.0, 32.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
+		0.0, 4.0,  0.0, 0, 0,   0.0f,  1.0f,  0.0f, // 16
+		8.0, 4.0, 0.0, 1, 0,   0.0f,  1.0f,  0.0f, // 17
+		8.0, 4.0, 32.0, 1, 1,  0.0f,  1.0f,  0.0f, // 18
+		0.0, 4.0, 32.0, 0, 1,   0.0f,  1.0f,  0.0f, // 19
 
 		// bottom
 		0.0, 0.0, 0.0, 0, 0, 0.0f,  -1.0f,  0.0f, // 20
@@ -552,7 +618,7 @@ void Demo::BuildCube6()
 	cube6.ApplyTexture("crate.png");
 	cube6.VerticesDraw(sizeof(indices));
 	cube6.transform.SetOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
-	cube6.transform.SetPosition(glm::vec3(48.0f, 0.5f, 40.0f));
+	cube6.transform.SetPosition(glm::vec3(48.0f, 5.5f, 40.0f));
 	cube6.transform.Scale(glm::vec3(0.5f, 0.5f, 0.5f));
 }
 
@@ -636,7 +702,7 @@ void Demo::BuildTexturedPlane()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	int width, height;
-	unsigned char* image = SOIL_load_image("wood.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image("Floor.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
@@ -700,6 +766,7 @@ void Demo::BuildDepthMap() {
 	// -----------------------
 	glGenFramebuffers(1, &depthMapFBO);
 	// create depth texture
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	glGenTextures(1, &depthMap);
 	glBindTexture(GL_TEXTURE_2D, depthMap);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, this->SHADOW_WIDTH, this->SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
@@ -716,7 +783,9 @@ void Demo::BuildDepthMap() {
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
+
 
 void Demo::BuildShaders()
 {

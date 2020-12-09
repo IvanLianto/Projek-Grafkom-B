@@ -23,6 +23,7 @@ public:
 	Object3D cube4;
 	Object3D cube5;
 	Object3D cube6;
+	Object3D cube3up;
 	Object3D plane;
 private:
 	GLuint depthmapShader, shadowmapShader, texture_id, plane_texture, stexture, stexture2, depthMapFBO, depthMap;
@@ -50,6 +51,7 @@ private:
 	void BuildCube();
 	void BuildCube2();
 	void BuildCube3();
+	void BuildCube3up();
 	void BuildCube4();
 	void BuildCube5();
 	void BuildCube6();

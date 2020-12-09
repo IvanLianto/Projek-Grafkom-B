@@ -90,5 +90,14 @@
     <Image Include="rak_beta.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Kulkas.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Kasir.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Floor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
