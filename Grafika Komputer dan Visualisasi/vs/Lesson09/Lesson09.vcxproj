@@ -148,6 +148,9 @@
     <Image Include="Floor.png" />
     <Image Include="Kasir.png" />
     <Image Include="Kulkas.png" />
+    <Image Include="Kulkasside.png" />
+    <Image Include="magazinerack.png" />
+    <Image Include="Rakup.png" />
     <Image Include="rak_beta.png" />
     <Image Include="wood.png" />
   </ItemGroup>

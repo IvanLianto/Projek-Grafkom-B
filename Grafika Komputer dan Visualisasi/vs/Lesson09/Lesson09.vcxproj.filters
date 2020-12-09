@@ -99,5 +99,14 @@
     <Image Include="Floor.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Kulkasside.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Rakup.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="magazinerack.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
