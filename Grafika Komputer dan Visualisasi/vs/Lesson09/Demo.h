@@ -48,9 +48,6 @@ private:
 	void BuildShaders();
 	void ApplyTexture(const char* _texturePath);
 	void BuildObject();
-	void CursorMovement();
-	//Build Camera
-	void BuildCamera();
 	// Build Plane
 	void BuildPlane();
 	//Build Cube
