@@ -185,14 +185,14 @@ void Demo::CursorMovement() {
 	angleZ = (float)((midY - mouseY)) / 1000;
 
 	// The higher the value is the faster the camera looks around.
-	camera.camDir.y += angleZ * 50;
+	camera.camDir.y += angleZ * 2;
 
 	// limit the rotation around the x-axis
-	if ((camera.camDir.y - camera.transform.position.y) > 25) {
-		camera.camDir.y = camera.transform.position.y + 25;
+	if ((camera.camDir.y - camera.transform.position.y) > 8) {
+		camera.camDir.y = camera.transform.position.y + 8;
 	}
-	if ((camera.camDir.y - camera.transform.position.y) < -30) {
-		camera.camDir.y = camera.transform.position.y - 30;
+	if ((camera.camDir.y - camera.transform.position.y) < -8) {
+		camera.camDir.y = camera.transform.position.y - 8;
 	}
 
 	camera.RotateCamera(-angleY);
@@ -218,11 +218,8 @@ void Demo::BuildObject() {
 	plane.Render(depthMap);
 
 	// Render cube
-	cube.SetShader(this->shadowmapShader);
 	cube.UseShader();
 	cube.Render(depthMap);
-	cube.SetShader(this->depthmapShader);
-	cube.RenderLight();
 
 	cube2.UseShader();
 	cube2.Render(depthMap);
@@ -265,7 +262,7 @@ void Demo::BuildCamera() {
 
 void Demo::BuildLight() {
 	light.SetShader(this->depthmapShader);
-	light.transform.SetPosition(glm::vec3(-2.0f, 4.0f, -1.0f));
+	light.transform.SetPosition(glm::vec3(0.0f, 10.0f, 0.0f));
 	light.SetLightDir(glm::vec3(0.0f, 0.0f, 0.0f));
 	light.SetLightUp(glm::vec3(0.0, 1.0, 0.0));
 	light.SetFarPlane(7.5f);
